@@ -45,7 +45,7 @@ const upload = multer({ storage: storage });
 
 app.post("/signup", async (request, response) => {
   try {
-    const { name, email, password, cPassword } = request.body;
+    const { name, email, password } = request.body;
     const success = await signup(name, email, password);
     if (success) response.json(true);
     else response.json(false);
