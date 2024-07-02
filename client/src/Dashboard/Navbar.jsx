@@ -1,7 +1,11 @@
 import React from "react";
 
 const Navbar = () => {
-  return <div></div>;
+  return (
+    <div>
+      <img src="/logo.png" alt="logo"></img>
+    </div>
+  );
 };
 
 export default Navbar;
