@@ -1,9 +1,12 @@
+require("dotenv").config({ path: "../.env" });
+
 const express = require("express");
 const session = require("express-session");
 const mongoose = require("mongoose");
 const cors = require("cors");
 const multer = require("multer");
 const path = require("path");
+const jwt = require("jsonwebtoken");
 
 const User = require("./models/User");
 const Bot = require("./models/Bot");
@@ -63,9 +66,11 @@ app.post("/login", async (request, response) => {
     const user = await login(email, password);
     if (user) {
       request.session.user = user;
+      const accessToken = jwt.sign(user, process.env.ACCESS_TOKEN_SECRET_KEY);
       response.json(user);
     } else response.json(false);
   } catch (error) {
+    console.log(error);
     response.status(400).json({
       success: false,
       message: "Opps something went wrong! Please try again",
