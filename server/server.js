@@ -10,9 +10,12 @@ const jwt = require("jsonwebtoken");
 
 const User = require("./models/User");
 const Bot = require("./models/Bot");
+
 const signup = require("./public/js/signup");
 const login = require("./public/js/login");
 const create = require("./public/js/create");
+const verify = require("./public/js/verify");
+const sendOTP = require("./public/js/sendOTP");
 
 const app = express();
 
@@ -46,6 +49,10 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage: storage });
 
+const authenticateToken = (request, response, next) => {
+  // const
+};
+
 app.post("/signup", async (request, response) => {
   try {
     const { name, email, password } = request.body;
@@ -65,16 +72,29 @@ app.post("/login", async (request, response) => {
     const { email, password } = request.body;
     const user = await login(email, password);
     if (user) {
-      request.session.user = user;
-      const accessToken = jwt.sign(user, process.env.ACCESS_TOKEN_SECRET_KEY);
+      // const accessToken = jwt.sign(user, process.env.ACCESS_TOKEN_SECRET_KEY);
+      console.log("success!");
       response.json(user);
-    } else response.json(false);
+    } else {
+      console.log("failed");
+      response.json(false);
+    }
   } catch (error) {
     console.log(error);
     response.status(400).json({
       success: false,
       message: "Opps something went wrong! Please try again",
     });
+  }
+});
+
+app.post("/verify", async (request, response) => {
+  try {
+    const email = request.body.email;
+    const found = await verify(email);
+    response.json({ verified: found });
+  } catch (error) {
+    console.log(error);
   }
 });
 
@@ -96,6 +116,15 @@ app.post("/create", async (request, response) => {
   } catch (error) {
     console.error(error);
     response.status(500).send("Error creating bot");
+  }
+});
+
+app.post("/sendotp", async (request, response) => {
+  try {
+    const otp = await sendOTP(request.body.email);
+    await response.json({ otp: otp });
+  } catch (error) {
+    console.log(error);
   }
 });
 
