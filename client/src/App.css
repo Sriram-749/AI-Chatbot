@@ -5,6 +5,7 @@
   font-family: sans-serif;
 }
 
+#submit,
 button[type="submit"] {
   background-color: white; /* Sky Blue */
   color: black;
@@ -17,6 +18,7 @@ button[type="submit"] {
   margin: 1rem 0;
 }
 
+#submit:hover,
 button[type="submit"]:hover {
   background-color: #00bfff;
   box-shadow: 10px 10px 50px #00bfff;

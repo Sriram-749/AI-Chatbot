@@ -16,6 +16,7 @@ const login = require("./public/js/login");
 const create = require("./public/js/create");
 const verify = require("./public/js/verify");
 const sendOTP = require("./public/js/sendOTP");
+const changePassword = require("./public/js/changePassword");
 
 const app = express();
 
@@ -92,7 +93,7 @@ app.post("/verify", async (request, response) => {
   try {
     const email = request.body.email;
     const found = await verify(email);
-    response.json({ verified: found });
+    response.json(found);
   } catch (error) {
     console.log(error);
   }
@@ -128,6 +129,15 @@ app.post("/sendotp", async (request, response) => {
   }
 });
 
+app.post("/reset", async (request, response) => {
+  try {
+    const { email, password } = request.body;
+    changePassword(email, password);
+    response.json({ status: "success" });
+  } catch (error) {
+    response.json({ status: failed, message: "Opps! Something went wrong" });
+  }
+});
 app.listen(4000, () => {
   console.log("Server listening to the port 4000!");
 });

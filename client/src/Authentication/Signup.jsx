@@ -30,6 +30,7 @@ const Signup = () => {
 
         if (response.data) {
           alert("singup successfull");
+          window.location.href = "/login";
         } else {
           alert("Sinup failed please try again");
         }

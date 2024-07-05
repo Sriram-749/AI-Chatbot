@@ -29,6 +29,7 @@ const Login = () => {
         setStatus("success");
         Cookies.set("uid", response.data.uid);
         Cookies.set("name", response.data.name);
+        window.location.href = "/";
       } else {
         setStatus("failed");
       }
