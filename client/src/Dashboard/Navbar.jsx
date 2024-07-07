@@ -27,9 +27,26 @@ const Navbar = () => {
   return (
     <div className="navbar">
       <img src="/logo.png" alt="logo"></img>
-
-      <input type="text" style={{ width: "500px" }} />
-      <FontAwesomeIcon icon={faMagnifyingGlass} />
+      <div style={{ position: "relative" }}>
+        <FontAwesomeIcon
+          icon={faMagnifyingGlass}
+          style={{
+            color: "#00bfff",
+            position: "absolute",
+            top: "25px",
+            left: "20px",
+          }}
+        />
+        <input
+          type="text"
+          style={{
+            width: "500px",
+            height: "50px",
+            paddingLeft: "50px",
+          }}
+          placeholder="Search for a bot"
+        />
+      </div>
       <div>
         <ul>
           <li>Home</li>
@@ -43,6 +60,8 @@ const Navbar = () => {
                   transform: "translateY(-10px)",
                   width: "130px",
                   textAlign: "center",
+                  backgroundColor: displayList && "#00bfff",
+                  color: displayList && "white",
                 }}
                 onMouseEnter={() => setDisplayList(true)}
                 onMouseLeave={() => setDisplayList(false)}
@@ -61,9 +80,8 @@ const Navbar = () => {
               <ul
                 style={{
                   display: displayList ? "block" : "none",
-                  transition: "transform 0.3s",
-                  transform: "translateY(-60px)",
-                  fontSize: "13px",
+                  transition: "display 0.3s",
+                  transform: "translateY(-30px)",
                   width: "150px",
                 }}
                 onMouseEnter={() => setDisplayList(true)}
