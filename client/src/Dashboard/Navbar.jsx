@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import Cookies from "js-cookie";
-// import axios from "axios";
+import axios from "axios";
 import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -25,6 +25,9 @@ const Navbar = () => {
     // console.log(response.data);
   };
 
+  const createBot = () => {
+    axios.get("http://localhost:4000/createBot");
+  };
   return (
     <div className="navbar">
       <img src="/logo.png" alt="logo"></img>
@@ -52,7 +55,7 @@ const Navbar = () => {
         id="button"
         type="button"
         style={{ width: "150px", height: "40px", marginTop: "10px" }}
-        onClick={() => (window.location.href = "/createBot")}
+        onClick={createBot}
       >
         <FontAwesomeIcon icon={faPlus} style={{ marginRight: "10px" }} />
         Create new

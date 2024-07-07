@@ -99,6 +99,11 @@ app.post("/verify", async (request, response) => {
   }
 });
 
+app.get("/createBot", authenticateToken, (request, response) => {
+  if (request.user) response.json(true);
+  response.json(false);
+});
+
 app.post("/create", async (request, response) => {
   try {
     const botObject = request.body;
