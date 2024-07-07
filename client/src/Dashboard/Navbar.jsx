@@ -8,6 +8,7 @@ import {
   faAngleDown,
   faRightFromBracket,
   faMagnifyingGlass,
+  faPlus,
 } from "@fortawesome/free-solid-svg-icons";
 
 import "./css/navbar.css";
@@ -47,6 +48,15 @@ const Navbar = () => {
           placeholder="Search for a bot"
         />
       </div>
+      <button
+        id="button"
+        type="button"
+        style={{ width: "150px", height: "40px", marginTop: "10px" }}
+        onClick={() => (window.location.href = "/createBot")}
+      >
+        <FontAwesomeIcon icon={faPlus} style={{ marginRight: "10px" }} />
+        Create new
+      </button>
       <div>
         <ul>
           <li>Home</li>
