@@ -5,6 +5,7 @@ const bcrypt = require("bcrypt");
 const signup = async (name, email, password) => {
   try {
     const duplicate = await User.findOne({ email });
+    console.log(duplicate);
     if (!duplicate) {
       const saltRounds = 12;
       const hashedPassword = await bcrypt.hash(password, saltRounds);

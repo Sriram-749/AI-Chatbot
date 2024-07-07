@@ -32,7 +32,7 @@ const Signup = () => {
           alert("singup successfull");
           window.location.href = "/login";
         } else {
-          alert("Sinup failed please try again");
+          alert("Account already exists");
         }
       } else {
         alert("password and confirm password must be same");

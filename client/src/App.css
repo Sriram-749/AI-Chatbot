@@ -3,11 +3,12 @@
   padding: 0;
   box-sizing: border-box;
   font-family: sans-serif;
+  list-style: none;
 }
 
 #submit,
 button[type="submit"] {
-  background-color: white; /* Sky Blue */
+  background-color: white;
   color: black;
   padding: 1rem;
   border: 1px solid #00bfff;
@@ -20,6 +21,23 @@ button[type="submit"] {
 
 #submit:hover,
 button[type="submit"]:hover {
+  background-color: #00bfff;
+  box-shadow: 10px 10px 50px #00bfff;
+  color: white;
+  transition: background-color 0.3s, box-shadow 0.3s, color 0.3s;
+}
+
+#button {
+  background-color: white;
+  color: black;
+  padding: 10px;
+  border: 1px solid #00bfff;
+  border-radius: 50px;
+  cursor: pointer;
+  font-size: 1rem;
+}
+
+#button:hover {
   background-color: #00bfff;
   box-shadow: 10px 10px 50px #00bfff;
   color: white;

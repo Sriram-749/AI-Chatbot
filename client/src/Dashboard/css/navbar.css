@@ -1,0 +1,47 @@
+.navbar ul {
+  display: flex;
+  float: right;
+  margin-top: 50px;
+}
+
+.navbar img {
+  height: 80px;
+  width: 80px;
+  margin: 20px;
+  float: left;
+}
+
+.navbar ul li {
+  margin-right: 30px;
+}
+
+.navbar ul li button {
+  transform: translatey(-10px);
+}
+
+.navbar ul li #button {
+  transform: translatey(-10px);
+  padding: 10px;
+  transform: translateY(-10px);
+  width: 130px;
+  text-align: center;
+}
+
+.navbar li #button:hover > #arrow {
+  transform: rotate("180");
+}
+
+.navbar ul li ul {
+  box-shadow: 2px 2px 10px rgb(181, 181, 181);
+  border-radius: 4px;
+}
+
+.navbar ul li ul li {
+  cursor: pointer;
+  padding: 15px;
+  width: 100%;
+}
+
+.navbar ul li ul li:hover {
+  background-color: rgb(229, 229, 229);
+}

@@ -138,6 +138,9 @@ app.post("/reset", async (request, response) => {
     response.json({ status: failed, message: "Opps! Something went wrong" });
   }
 });
+
+app.post("/logout", (request, response) => {});
+
 app.listen(4000, () => {
   console.log("Server listening to the port 4000!");
 });
