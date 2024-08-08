@@ -12,25 +12,27 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 
 import "./css/navbar.css";
+
 const Navbar = () => {
   const [displayList, setDisplayList] = useState(false);
+  // const [msgTrigger, setMsgTrigger] = useState(false);
 
   const uid = Cookies.get("uid");
   const name = Cookies.get("name");
+  const token = Cookies.get("token");
+
   const Logout = () => {
     Cookies.remove("uid");
     Cookies.remove("name");
+    Cookies.remove("token");
     window.location.href = "/login";
-    // const response = axios.post("http://localhost:4000/logout", { uid });
-    // console.log(response.data);
   };
 
-  const createBot = () => {
-    axios.get("http://localhost:4000/createBot");
-  };
   return (
     <div className="navbar">
-      <img src="/logo.png" alt="logo"></img>
+      <Link to="/">
+        <img src="/logo.png" alt="logo" />
+      </Link>
       <div style={{ position: "relative" }}>
         <FontAwesomeIcon
           icon={faMagnifyingGlass}
@@ -55,7 +57,17 @@ const Navbar = () => {
         id="button"
         type="button"
         style={{ width: "150px", height: "40px", marginTop: "10px" }}
-        onClick={createBot}
+        onClick={async () => {
+          try {
+            console.log(token);
+            await axios.get("http://localhost:4000/createbot", {
+              headers: { Authorization: `Bearer ${token}` },
+            });
+            window.location.href = "/createbot";
+          } catch (err) {
+            window.location.href = "/login";
+          }
+        }}
       >
         <FontAwesomeIcon icon={faPlus} style={{ marginRight: "10px" }} />
         Create new
@@ -93,8 +105,10 @@ const Navbar = () => {
               <ul
                 style={{
                   display: displayList ? "block" : "none",
+                  position: "fixed",
                   transition: "display 0.3s",
-                  transform: "translateY(-30px)",
+                  // transform: "translateY(-30px)",
+                  top: "40px",
                   width: "150px",
                 }}
                 onMouseEnter={() => setDisplayList(true)}

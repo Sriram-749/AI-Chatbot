@@ -1,7 +1,6 @@
 require("dotenv").config({ path: "../.env" });
 
 const express = require("express");
-const session = require("express-session");
 const mongoose = require("mongoose");
 const cors = require("cors");
 const multer = require("multer");
@@ -26,102 +25,49 @@ app.use(express.static("public"));
 app.use("/js", express.static(__dirname + "/public/js"));
 app.use("/images", express.static(__dirname + "/public/images"));
 
-app.use(
-  session({
-    secret: "Shh... this is a secret key",
-    resave: false,
-    saveUninitialized: true,
-  })
-);
-
 mongoose
   .connect("mongodb://127.0.0.1:27017/chatbot")
   .then(() => console.log("MongoDB connected"));
 
-const storage = multer.diskStorage({
-  destination: (request, file, callback) => {
-    callback(null, "uploads/");
-  },
-
-  filename: (request, file, callback) => {
-    callback(null, Date.now() + path.extname(file.originalname));
-  },
-});
-
-const upload = multer({ storage: storage });
-
-const authenticateToken = (request, response, next) => {
-  // const
-};
-
-app.post("/signup", async (request, response) => {
+app.post("/signup", async (req, res) => {
   try {
-    const { name, email, password } = request.body;
+    const { name, email, password } = req.body;
     const success = await signup(name, email, password);
-    if (success) response.json(true);
-    else response.json(false);
-  } catch (error) {
-    response.status(400).json({
+    if (success) res.json(true);
+    else res.json(false);
+  } catch (err) {
+    res.status(400).json({
       success: false,
       message: "Opps something went wrong! Please try again",
     });
   }
 });
 
-app.post("/login", async (request, response) => {
+app.post("/login", async (req, res) => {
   try {
-    const { email, password } = request.body;
+    const { email, password } = req.body;
     const user = await login(email, password);
     if (user) {
-      // const accessToken = jwt.sign(user, process.env.ACCESS_TOKEN_SECRET_KEY);
-      console.log("success!");
-      response.json(user);
+      const accessToken = jwt.sign(user, process.env.ACCESS_TOKEN_SECRET_KEY);
+      res.json({ user: user, token: accessToken });
     } else {
-      console.log("failed");
-      response.json(false);
+      res.json(false);
     }
-  } catch (error) {
-    console.log(error);
-    response.status(400).json({
+  } catch (err) {
+    res.status(400).json({
       success: false,
       message: "Opps something went wrong! Please try again",
     });
   }
 });
 
-app.post("/verify", async (request, response) => {
+app.post("/verify", async (req, res) => {
   try {
-    const email = request.body.email;
+    const email = req.body.email;
     const found = await verify(email);
-    response.json(found);
-  } catch (error) {
-    console.log(error);
-  }
-});
-
-app.get("/createBot", authenticateToken, (request, response) => {
-  if (request.user) response.json(true);
-  response.json(false);
-});
-
-app.post("/create", async (request, response) => {
-  try {
-    const botObject = request.body;
-    const botData = {
-      uid: botObject.uid,
-      name: botObject.botname,
-      personalities: [
-        ...botObject.positivePersonalities,
-        ...botObject.negativePersonalities,
-      ],
-      date: botObject.date,
-      time: botObject.time,
-    };
-    await Bot.create(botData);
-    response.status(201).send("Bot created successfully");
-  } catch (error) {
-    console.error(error);
-    response.status(500).send("Error creating bot");
+    res.json(found);
+  } catch (err) {
+    console.log(err);
   }
 });
 
@@ -139,12 +85,29 @@ app.post("/reset", async (request, response) => {
     const { email, password } = request.body;
     changePassword(email, password);
     response.json({ status: "success" });
-  } catch (error) {
+  } catch (err) {
     response.json({ status: failed, message: "Opps! Something went wrong" });
   }
 });
 
-app.post("/logout", (request, response) => {});
+function authenticateToken(req, res, next) {
+  const authHeader = req.headers["authorization"];
+  const token = authHeader && authHeader.split(" ")[1];
+  if (token == null) res.sendStatus(401);
+  jwt.verify(token, process.env.ACCESS_TOKEN_SECRET_KEY, (err, user) => {
+    if (err) return res.sendStatus(403);
+    req.user = user;
+    next();
+  });
+}
+
+app.get("/createbot", authenticateToken, (req, res) => {
+  if (req.user) return res.json(true);
+  res.status(403).json({
+    success: false,
+    message: "Unauthorized",
+  });
+});
 
 app.listen(4000, () => {
   console.log("Server listening to the port 4000!");

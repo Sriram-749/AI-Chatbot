@@ -27,8 +27,9 @@ const Login = () => {
 
       if (response.data) {
         setStatus("success");
-        Cookies.set("uid", response.data.uid);
-        Cookies.set("name", response.data.name);
+        Cookies.set("uid", response.data.user.uid);
+        Cookies.set("name", response.data.user.name);
+        Cookies.set("token", response.data.token);
         window.location.href = "/";
       } else {
         setStatus("failed");
